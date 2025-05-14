@@ -8,23 +8,23 @@ export default function Form({ isEdit }) {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    name: "",
-    director: "",
-    plot: "",
+    devToolName: "",
+    devToolBuilder: "",
+    devToolDesciption: "",
   });
 
   const [apiError, setApiError] = useState(null);
 
   const { data, loading, error } = useFetch(
-    `${import.meta.env.VITE_API_URL}/movies/${id}`
+    `${import.meta.env.VITE_API_URL}/tools/${id}`
   );
 
   useEffect(() => {
     if (isEdit && data) {
       setFormData({
-        name: data?.name || "",
-        director: data?.director || "",
-        plot: data?.plot || "",
+        devToolName: data?.devToolName || "",
+        devToolBuilder: data?.devToolBuilder || "",
+        devToolDesciption: data?.devToolDesciption || "",
       });
     }
   }, [isEdit, data, id]);
@@ -36,7 +36,7 @@ export default function Form({ isEdit }) {
     try {
       if (isEdit) {
         const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/movies/${id}`,
+          `${import.meta.env.VITE_API_URL}/tools/${id}`,
           {
             method: "PUT",
             headers: {
@@ -53,7 +53,7 @@ export default function Form({ isEdit }) {
           setApiError(errorData.message || "Failed to update startup");
         }
       } else {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/movies`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/tools`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -87,7 +87,7 @@ export default function Form({ isEdit }) {
         <div className="card shadow border-0">
           <div className="card-body p-4">
             <h2 className="card-title mb-4">
-              {isEdit ? "Edit Movie" : "Add New Movie"}
+              {isEdit ? "Edit Dev Tool" : "Add New Dev Tool"}
             </h2>
 
             {(error || apiError) && (
@@ -98,49 +98,51 @@ export default function Form({ isEdit }) {
 
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
-                <label htmlFor="name" className="form-label">
-                  Movie Name
+                <label htmlFor="devToolName" className="form-label">
+                  Dev Tool Name
                 </label>
                 <input
                   type="text"
                   className="form-control"
-                  name="name"
-                  id="name"
-                  value={formData.name}
+                  name="devToolName"
+                  id="devToolName"
+                  value={formData.devToolName}
                   onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
+                    setFormData({ ...formData, devToolName: e.target.value })
                   }
                   required
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="director" className="form-label">
-                  Movie Director
+                <label htmlFor="devToolBuilder" className="form-label">
+                  Builder
                 </label>
-                <textarea
+                <input
                   className="form-control"
-                  name="director"
-                  id="director"
-                  value={formData.director}
+                  name="devToolBuilder"
+                  id="devToolBuilder"
+                  value={formData.devToolBuilder}
                   onChange={(e) =>
-                    setFormData({ ...formData, director: e.target.value })
+                    setFormData({ ...formData, devToolBuilder: e.target.value })
                   }
-                  rows={8}
                   required
-                ></textarea>
+                />
               </div>
               <div className="mb-4">
-                <label htmlFor="plot" className="form-label">
-                  Movie Plot
+                <label htmlFor="devToolDesciption" className="form-label">
+                  Description
                 </label>
                 <textarea
                   type="text"
                   className="form-control"
-                  name="plot"
-                  id="plot"
-                  value={formData.plot}
+                  name="devToolDesciption"
+                  id="devToolDesciption"
+                  value={formData.devToolDesciption}
                   onChange={(e) =>
-                    setFormData({ ...formData, plot: e.target.value })
+                    setFormData({
+                      ...formData,
+                      devToolDesciption: e.target.value,
+                    })
                   }
                   required
                   rows={8}
